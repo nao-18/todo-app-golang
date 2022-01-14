@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./server:/go/src/github.com/nao-18/golang-and-react-app
+    tty: true
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - '5430:5432'
+    environment:
+      POSTGRES_DB: restapi_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # POSTGRES_INITDB_ARGS: '--encoding=UTF-8'
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - ./postgres:/var/lib/postgresql/data
+    restart: always
+    tty: true
+
+  proxy:
+    container_name: proxy
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - '8081:80'
+    depends_on:
+      - app
+
+  node:
+    container_name: node
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    volumes:
+      - ./client:/usr/src/app
+    # command: sh -c "cd  && yarn start"
+    ports:
+      - '3000:3000'
+    stdin_open: true
