@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./docker/app/Dockerfile
     volumes:
-      - ./server:/go/src/github.com/nao-18/golang-and-react-app
+      - ./server:/go/src/github.com/nao-18/test-todo-app
     tty: true
     depends_on:
       - postgres

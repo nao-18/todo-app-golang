@@ -1,6 +1,6 @@
 FROM golang:1.16-alpine
 
-WORKDIR /go/src/github.com/nao-18/golang-and-react-app
+WORKDIR /go/src/github.com/nao-18/test-todo-app
 COPY ./server .
 
 RUN apk upgrade --update && \
