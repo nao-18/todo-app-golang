@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/go-ini/ini"
+	"github.com/nao-18/test-todo-app/untils"
 	"log"
 )
 
@@ -16,6 +17,7 @@ var Config ConfigList
 
 func init() {
 	LoadConfig()
+	untils.LoggingSettings(Config.LogFile)
 }
 
 func LoadConfig() {
